@@ -1,0 +1,22 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    geocode (0.2.1)
+      json
+      trollop
+    json (2.0.2)
+    tba (0.2.1)
+    trollop (2.1.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  geocode
+  tba
+
+RUBY VERSION
+   ruby 2.0.0p645
+
+BUNDLED WITH
+   1.12.5
