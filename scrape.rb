@@ -1,12 +1,11 @@
 require 'tba'
-require 'hl-geocoder'
 require 'pathname'
 require 'json'
+require 'hl-geocoder'
 
 tba = TBA.new('erikboesen:firstmap_scraper:v0.1')
 
-key = File.read('key.txt')
-geo = Geocoder.new(key)
+geo = Geocoder.new(File.read('key.txt'))
 
 
 puts 'Reminder: if you think team data may have changed since last time you ran this script, make sure there\'s nothing in the data folder.'
@@ -64,16 +63,15 @@ unless teams.length > 0
     end
 end
 
-print "#{teams.length} teams are active."
+puts "#{teams.length} active teams found."
 
 if Pathname('data/locations.json').exist?
-    puts 'Their locations have been fetched already.'
+    puts 'Team locations have been fetched already.'
     locations = JSON.parse(File.read('data/locations.json'))
 else
     locations = []
+    puts 'Preparing to fetch their locations. This may take a while...'
 end
-
-puts 'This will take a while.'
 
 unless locations.length > 0
     teams.each_with_index do |team, i|
@@ -85,8 +83,6 @@ unless locations.length > 0
         end
     end
 end
-
-puts JSON.parse(geo.geocode locations[1])["results"][0]["formatted_address"]
 
 pages_needed = (locations.length / 100).ceil
 
@@ -103,7 +99,7 @@ end
 
 for i in (first_page * 100)..locations.length
     if locations[i]
-        coordinates[i] = geo.geocode locations[i]
+        coordinates[i] = geo.geocode(locations[i])
     else
         coordinates[i] = nil
     end
