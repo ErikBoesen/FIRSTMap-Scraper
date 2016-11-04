@@ -1,13 +1,15 @@
 require 'tba'
-require 'geocode'
+require 'hl-geocoder'
 require 'pathname'
 require 'json'
 
 tba = TBA.new('erikboesen:firstmap_scraper:v0.1')
-geo = Geocode.new_geocoder :google, {:google_api_key => 'abcd1234_SAMPLE_GOOGLE_API_KEY_etc'}
+
+key = File.read('key.txt')
+geo = Geocoder.new(key)
 
 
-puts "Reminder: if you think team data may have changed since last time you ran this script, make sure there's nothing in the data/ folder."
+puts 'Reminder: if you think team data may have changed since last time you ran this script, make sure there\'s nothing in the data folder.'
 
 if Pathname('data/teams.json').exist?
     teams = JSON.parse(File.read('data/teams.json'))
@@ -41,15 +43,21 @@ unless teams.length > 0
 
             # Go through the whole list and remove any team that isn't active anymore
             teams.to_enum.with_index.reverse_each do |num, i|
+                # Get a list of years the team was active.
                 team_years = tba.get_team_years(num)
 
                 puts "Checking team #{teams[i]}...";
-                if team_years.last < yr
+                puts "The last year team #{teams[i]} was active was #{team_years.last}."
+                # If there is a list of teams (sometimes the list is returned empty),
+                # and the most recent year they participated is before this year...
+                if team_years.length > 0 && team_years.last < yr
+                    # Take it out of the list.
                     puts "#{teams[i]} is no longer active, removing."
                     teams.delete(i)
                 end
             end
 
+            # Once everything's done, store the cleaned team list.
             File.write('data/teams.json', JSON.generate(teams))
             break
         end
@@ -78,7 +86,9 @@ unless locations.length > 0
     end
 end
 
-pages_needed = (locations.length / 100).ciel
+puts JSON.parse(geo.geocode locations[1])["results"][0]["formatted_address"]
+
+pages_needed = (locations.length / 100).ceil
 
 coordinates = []
 first_page = 0
@@ -91,15 +101,15 @@ pages_needed.times do |i|
     end
 end
 
-for i in (pages_needed * 100)..locations.length
+for i in (first_page * 100)..locations.length
     if locations[i]
-        coordinates[i] = geo.geocode(locations[i])
+        coordinates[i] = geo.geocode locations[i]
     else
         coordinates[i] = nil
     end
 
     if i % 100 == 0
-        File.write("data/coordinates/#{(i - 100) / 100}", coordinates[(i - 100)..i])
+        File.write("data/coordinates/#{(i - 100) / 100}.json", coordinates[(i - 100)..i])
     end
 end
 

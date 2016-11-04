@@ -51,3 +51,6 @@ build-iPhoneSimulator/
 
 # Don't commit JSON data we generate
 *.json
+
+# Prevent committing key
+key.txt
