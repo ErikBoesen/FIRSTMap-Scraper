@@ -2,4 +2,4 @@ source 'https://rubygems.org'
 ruby RUBY_VERSION
 
 gem 'tba'
-gem 'vlgeocoder'
+gem 'hl-geocoder'

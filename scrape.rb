@@ -1,7 +1,7 @@
 require 'tba'
 require 'pathname'
 require 'json'
-require 'vlgeocoder'
+require 'hl-geocoder'
 
 tba = TBA.new('erikboesen:firstmap_scraper:v0.1')
 
