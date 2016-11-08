@@ -1,14 +1,14 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    hl-geocoder (0.1.0)
+    vlgeocoder (0.1.0)
     tba (0.2.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  hl-geocoder
+  vlgeocoder
   tba
 
 RUBY VERSION

@@ -1,12 +1,11 @@
 require 'tba'
 require 'pathname'
 require 'json'
-require 'hl-geocoder'
+require 'vlgeocoder'
 
 tba = TBA.new('erikboesen:firstmap_scraper:v0.1')
 
 geo = Geocoder.new(File.read('key.txt'))
-
 
 puts 'Reminder: if you think team data may have changed since last time you ran this script, make sure there\'s nothing in the data folder.'
 
