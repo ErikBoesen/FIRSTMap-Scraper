@@ -94,7 +94,7 @@ except Exception as e:
     if e is KeyboardInterrupt:
         raise KeyboardInterrupt
     else:
-        print('Location Error Likely Running Hot.  Try again in a few minutes, or contact the adminstrator of this code.\n\n')
+        print('Location Error - Likely Running Hot.  Try again in a few minutes, or contact the adminstrator of this code.\n\n')
 
 teams = TBA.get_team_list()
 
